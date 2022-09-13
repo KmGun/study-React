@@ -1,5 +1,6 @@
 import Home from "./routes/Home"
-import Hello from "./components/Hello";
+import Detail from "./routes/Detail";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,7 +13,7 @@ function App(){
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/movie" element={<Hello></Hello>}></Route>
+          <Route path="/movie/:id" element={<Detail></Detail>}></Route>
           <Route path="/" element={<Home></Home>}></Route>
         </Routes>
       </Router>
