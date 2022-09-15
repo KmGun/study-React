@@ -1,8 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/class - reactjs/node_modules
-/class - masterjs/node_modules
-/class - egoing/node_modules
+/class_reactjs/node_modules
+/class_masterjs/styledcomponent/node_modules
+/class_masterjs/typescript/node_modules
+/class_egoing/node_modules
 
 
