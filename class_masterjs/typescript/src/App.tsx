@@ -1,13 +1,9 @@
-import React from 'react';
-import './App.css';
-import Circle from './Circle';
+import Router from "./routes/Router";
 
-function App() {
-  return (
-    <div className="App">
-      <Circle bgColor='black' borderColor='red'></Circle>
-    </div>
-  );
+function App(){
+  return(
+    <Router></Router>
+  )
 }
 
 export default App;
