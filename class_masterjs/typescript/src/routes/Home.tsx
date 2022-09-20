@@ -4,24 +4,33 @@ import styled from "styled-components";
 import {Link, useParams} from "react-router-dom";
 
 const Container = styled.div`
-
+    padding: 0px 20px;
+    max-width:480px;
+    margin: 0 auto;
 `;
 
 const Header = styled.header`
-    
+    height: 15vh;
+    display:flex; 
+    justify-content: center;
+    align-items: center;
 
 `;
 
 const Coin = styled.li`
-    width:100px; height:30px;
+    width:100px; height:50px;
     background-color: skyblue;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 `;
 const CoinsList = styled.ul`
 
 `;
 
 const Img = styled.img`
-    
+    width:35px; height: 35px;
+
 `
 
 
@@ -57,11 +66,13 @@ function Home(){
                     <CoinsList>
                         {coins.map(coin =>
                             <Coin key={coin.id}>
-                                <Img src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}></Img>
                                 <Link
                                     to={`/detail/${coin.id}`}
                                     state={{...coin}}
-                                >{coin.name}</Link>
+                                >
+                                     <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}></Img>
+                                    {coin.name} &rarr;
+                                </Link>
                             </Coin>
                         )}
                     </CoinsList>
