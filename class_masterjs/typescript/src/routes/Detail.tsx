@@ -3,6 +3,8 @@ import { fetchCoinInfo } from "../api";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import {Routes,Route,useMatch,Outlet,Link} from "react-router-dom";
+import {Helmet} from "react-helmet";
+
 interface IcoinData {
     id:                 string;
     name:               string;
@@ -34,6 +36,9 @@ function Detail(){
 
     return(
         <>
+            <Helmet>
+                <title>{coinId}</title>
+            </Helmet>
             <h1>{state?.name ? state.name : coinLoading ? <p>Loading....</p> : coinData?.name }</h1>
             <Tabs>
                 <Tab isActive={chartMatch !== null}>
