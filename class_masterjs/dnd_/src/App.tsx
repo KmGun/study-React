@@ -1,28 +1,68 @@
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import { toDosAtom, Categories } from "./atoms";
+import { toDosAtom, Categories, ItoDos } from "./atoms";
 import DroppableCard from "./components/DroppableCard";
+import styled from "styled-components";
 
+
+const Wrapper = styled.div`
+    display:flex;
+    align-items: center;
+    justify-content: center;
+`
 
 export default function App() {
   const [toDos,setToDos] = useRecoilState(toDosAtom);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => { 
     if (!destination) return; 
-    // setToDos(prev => {
-    //   const oldToDos = [...prev];
-    //   const oldToDo = oldToDos.splice(source.index,1)[0];
-    //   oldToDos.splice(destination.index,0,oldToDo);
-    //   const newToDos = oldToDos;
-    //   return newToDos
-    // })
+    if (destination.droppableId === source.droppableId){
+      setToDos(oldToDos => {
+        // prev 리스트를 받아서, newTodos 리스트로 바꿔주는 로직
+        const oldToDoList = [...oldToDos[source.droppableId]];
+        const oldToDo = oldToDoList.splice(source.index,1)[0];
+        oldToDoList.splice(destination.index,0,oldToDo);
+        const newToDoList = oldToDoList;
+        const newToDos = {...oldToDos}
+        newToDos[source.droppableId] = newToDoList;
+        return newToDos;
+
+      })
+    
+    }
+    if (destination.droppableId !== source.droppableId){
+        setToDos(oldToDos => {
+
+
+          //1. source array의 요소를 삭제, moving생성
+
+          const sourceToDoList = [...oldToDos[source.droppableId]];
+          const moving = sourceToDoList.splice(source.index,1)[0];
+
+           //2.  destination array의 요소 추가
+          const destinToDoList = [...oldToDos[destination.droppableId]];
+          destinToDoList.splice(destination.index,0,moving);
+
+           //3. newToDos에 배정
+          const newToDos = {...oldToDos};
+          newToDos[source.droppableId] = sourceToDoList;
+          newToDos[destination.droppableId] = destinToDoList;
+
+          return newToDos;
+
+        })
+
+
+
+    }
+
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div>
+        <Wrapper>
         {Object.keys(toDos).map(droppableId => 
-          <DroppableCard key = {droppableId} droppableId = {droppableId as Categories}></DroppableCard>  
+            <DroppableCard key = {droppableId} droppableId = {droppableId as Categories}></DroppableCard>  
         )}
-      </div>
+        </Wrapper>
     </DragDropContext>
   );
 }
