@@ -1,11 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/class_reactjs/node_modules
-/class_masterjs/styledcomponent/node_modules
-/class_masterjs/typescript/node_modules
-/class_masterjs/todolist/node_modules
-/class_masterjs/dnd/node_modules
-/class_egoing/node_modules
-
+node_modules/
+.DS_Store
 
