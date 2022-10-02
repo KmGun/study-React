@@ -1,14 +1,20 @@
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import { toDosAtom, Categories, ItoDos } from "./atoms";
+import { toDosAtom, Categories, ItoDos, ItoDo } from "./atoms";
 import DroppableCard from "./components/DroppableCard";
 import styled from "styled-components";
-
+import { useEffect } from "react";
+import produce from "immer";
 
 const Wrapper = styled.div`
     display:flex;
     align-items: center;
     justify-content: center;
+`
+const AddToDoBtn = styled.button`
+  width : 50px; height : 50px;
+  background-color: aliceblue;
+  border-radius: 10px;
 `
 
 export default function App() {
@@ -50,20 +56,50 @@ export default function App() {
           return newToDos;
 
         })
-
-
-
     }
 
   };
+  const onClickAddToDoBtn = () => {
+    setToDos(current => 
+      produce(current,(draft) => {
+        const newToDo : ItoDo = {id:Date.now(),text:"여기를 수정해주세요",category:Categories.미완}
+        draft[Categories.미완].push(newToDo);
+        return draft;
+      })
+    )
+  }
+  // downlaod ""
+    useEffect(()=> {
+      setToDos(current => 
+        produce(current,(draft)=>{
+          for (let key in toDos){
+            let stored = JSON.parse(localStorage.getItem(key) as string);
+            draft[key] = stored;
+          }
+          return draft;
+        })
+      )
+    },[])
+  // upload toDos on localStorage
+    useEffect(()=> {
+      for (let key in toDos) {
+        let toDo = toDos[key];
+        localStorage.setItem(key,JSON.stringify(toDo));
+      }
+    },[toDos])
+
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-        <Wrapper>
-        {Object.keys(toDos).map(droppableId => 
-            <DroppableCard key = {droppableId} droppableId = {droppableId as Categories}></DroppableCard>  
-        )}
-        </Wrapper>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+          <Wrapper>
+          {Object.keys(toDos).map(droppableId => 
+              <DroppableCard key = {droppableId} droppableId = {droppableId as Categories}></DroppableCard>  
+          )}
+          </Wrapper>
+      </DragDropContext>
+      <AddToDoBtn onClick={onClickAddToDoBtn}>+</AddToDoBtn>
+    </>
   );
 }
 
